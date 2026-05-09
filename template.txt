@@ -1,0 +1,10 @@
+# AutoTicket Template
+# One field name per line, exactly as it appears in the event table.
+# Lines starting with # are ignored.
+# Order here = order in the output ticket.
+# Example:
+
+Source IP
+Destination IP
+Event Time
+Severity

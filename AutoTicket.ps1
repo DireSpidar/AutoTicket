@@ -64,11 +64,22 @@ function Format-Value {
 $lines = [System.Collections.Generic.List[string]]::new()
 
 foreach ($field in $templateFields) {
-    $raw = Get-EventValue $event $field
-    if ($null -eq $raw) {
-        Write-Warning "Field '$field' not found in event data — leaving blank."
+    # Combined fields (e.g. "destination.ip/destination.port") pull multiple JSON values
+    # and join them with the same separator used in the template line
+    if ($field -match '/') {
+        $subFields = $field -split '/'
+        $values = $subFields | ForEach-Object {
+            $raw = Get-EventValue $event $_
+            Format-Value $raw
+        }
+        $lines.Add("${field}: $($values -join '/')")
+    } else {
+        $raw = Get-EventValue $event $field
+        if ($null -eq $raw) {
+            Write-Warning "Field '$field' not found in event data — leaving blank."
+        }
+        $lines.Add("${field}: $(Format-Value $raw)")
     }
-    $lines.Add("${field}: $(Format-Value $raw)")
     $lines.Add("")
 }
 

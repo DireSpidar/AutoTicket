@@ -1,0 +1,33 @@
+agent.name: ###
+
+rule.category: ###
+
+rule.name: ###
+
+@timestamp: ###
+
+suricata.flow_id: ###
+
+source.ip: ###
+
+source.port: ###
+
+destination.ip/destination.port: ###
+
+protocol: ###
+
+suricata.flow.bytes_toclient: ###
+
+suricata.flow.bytes_toserver: ###
+
+suricata.alert.rev: ###
+
+suricata.alert.severity: ###
+
+suricata.direction: ###
+
+network.direction: ###
+
+suricata.alert.metadata.confidence: ###
+
+Time Range Investigated: ###

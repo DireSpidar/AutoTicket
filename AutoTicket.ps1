@@ -66,7 +66,7 @@ $lines = [System.Collections.Generic.List[string]]::new()
 foreach ($field in $templateFields) {
     $raw = Get-EventValue $event $field
     if ($null -eq $raw) {
-        Write-Warning "Field '$field' not found in event data — leaving blank."
+        Write-Warning "Field '$field' not found in event data - leaving blank."
     }
     $lines.Add("${field}: $(Format-Value $raw)")
     $lines.Add("")

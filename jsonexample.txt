@@ -1,0 +1,519 @@
+JSON DATA START:
+{
+  "_index": "",
+  "_id": "",
+  "_version": ,
+  "_score": ,
+  "_source": {
+    "rule": {
+      "name": "",
+      "category": [
+        ""
+      ],
+      "id": 
+    },
+    "vulnerability": {
+      "category": [
+        "",
+        ""
+      ]
+    },
+    "rootId": "",
+    "ecs": {
+      "version": "8..0"
+    },
+    "event": {
+      "kind": "",
+      "hash": "",
+      "ingested": "",
+      "start": "",
+      "id": [
+        
+      ],
+      "dataset": "",
+      "end": "",
+      "duration": ,
+      "provider": "",
+      "module": ""
+    },
+    "lastPacket": ,
+    "related": {
+      "device_name": [
+        ""
+      ],
+      "manufacturer": [
+        ""
+      ],
+      "role": [
+        ""
+      ],
+      "ip": [
+        "",
+        ""
+      ],
+      "device_id": [
+        
+      ],
+      "site": [
+        ""
+      ]
+    },
+    "@timestamp": "",
+    "client": {
+      "bytes": ,
+      "packets": ""
+    },
+    "protocol": [
+      ""
+    ],
+    "timestamp": ,
+    "agent": {
+      "name": ""
+    },
+    "server": {
+      "bytes": ,
+      "packets": ""
+    },
+    "source": {
+      "geo": {
+        "postal_code": "",
+        "location": {
+          "lon": ,
+          "lat": 
+        },
+        "ip": "",
+        "country_name": "",
+        "country_code2": "",
+        "dma_code": 820,
+        "region_name": "",
+        "city_name": "",
+        "latitude": ,
+        "country_iso_code": "",
+        "region_code": "",
+        "longitude": ,
+        "country_code3": "",
+        "timezone": "",
+        "continent_code": ""
+      },
+      "port": ,
+      "as": {
+        "full": ""
+      },
+      "segment": {
+        "name": ""
+      },
+      "ip": ""
+    },
+    "host": {
+      "name": ""
+    },
+    "length": ,
+    "totDataBytes": ,
+    "ipProtocol": ,
+    "firstPacket": ,
+    "tags": [
+      "",
+      "",
+      ""
+    ],
+    "log": {
+      "file": {
+        "path": ""
+      }
+    },
+    "node": "",
+    "destination": {
+      "port": ,
+      "device": {
+        "name": [
+          ""
+        ],
+        "manufacturer": [
+          ""
+        ],
+        "site": [
+          ""
+        ],
+        "role": [
+          ""
+        ],
+        "id": [
+          
+        ]
+      },
+      "segment": {
+        "name": [
+          ""
+        ],
+        "id": [
+          
+        ]
+      },
+      "ip": ""
+    },
+    "network": {
+      "direction": "",
+      "community_id": "",
+      "iana_number": [
+        ""
+      ],
+      "bytes": ,
+      "name": [
+        "",
+        ""
+      ],
+      "transport": "",
+      "type": "",
+      "packets": 
+    },
+    "@version": "",
+    "input": {},
+    "suricata": {
+      "direction": "",
+      "timestamp": "",
+      "flow_id": ,
+      "pkt_src": "",
+      "metadata": {
+        "flowbits": [
+          "",
+          ""
+        ]
+      },
+      "alert": {
+        "action": "",
+        "metadata": {
+          "updated_at": [
+            ""
+          ],
+          "created_at": [
+            ""
+          ],
+          "signature_severity": [
+            ""
+          ]
+        },
+        "severity": ,
+        "rev": 
+      },
+      "flow": {
+        "src_port": ,
+        "src_ip": "",
+        "pkts_toserver": ,
+        "dest_port": ,
+        "start": "",
+        "pkts_toclient": ,
+        "bytes_toserver": ,
+        "bytes_toclient": ,
+        "dest_ip": ""
+      }
+    }
+  },
+  "fields": {
+    "event.start": [
+      ""
+    ],
+    "event.end": [
+      ""
+    ],
+    "lastPacket": [
+      ""
+    ],
+    "firstPacket": [
+      ""
+    ],
+    "event.ingested": [
+      ""
+    ],
+    "@timestamp": [
+      ""
+    ]
+  },
+  "sort": [
+    ,
+    
+  ],
+  "isAnchor": 
+}
+JSON DATA END
+
+
+-------------------------------------------------------------
+TABLE VALUES START
+
+
+@timestamp
+	
+@version
+
+	
+_id
+	
+_index
+	
+_score
+ 
+	
+_type
+ 
+	
+agent.name
+	
+client.bytes
+
+	
+client.packets
+
+	
+destination.device.id
+	
+destination.device.manufacturer
+	
+destination.device.name
+	
+destination.device.role
+	
+destination.device.site
+	
+destination.ip
+	
+destination.port
+
+destination.segment.id
+
+	
+destination.segment.name
+	
+ecs.version
+	
+event.dataset
+
+	
+event.duration
+
+	
+event.end
+	
+event.hash
+	
+event.id
+
+	
+event.ingested
+	
+event.kind
+
+	
+event.module
+
+event.provider
+
+	
+event.start
+
+	
+firstPacket
+	
+host.name
+
+	
+ipProtocol
+
+	
+lastPacket
+
+	
+length
+0
+	
+log.file.path
+
+	
+network.bytes
+
+	
+network.community_id
+
+network.direction
+
+	
+network.iana_number
+
+	
+network.name
+
+	
+network.packets
+
+	
+network.transport
+
+	
+network.type
+
+	
+node
+
+	
+protocol
+
+	
+related.device_id
+
+	
+related.device_name
+
+	
+related.ip
+
+	
+related.manufacturer
+
+	
+related.role
+
+	
+related.site
+
+	
+rootId
+
+	
+rule.category
+
+	
+rule.id
+
+	
+rule.name
+	
+server.bytes
+
+
+server.packets
+
+	
+source.as.full
+	
+source.geo.city_name
+
+	
+source.geo.continent_code
+
+	
+source.geo.country_code2
+
+	
+source.geo.country_code3
+
+	
+source.geo.country_iso_code
+
+	
+source.geo.country_name
+
+	
+source.geo.dma_code
+
+	
+source.geo.ip
+
+	
+source.geo.latitude
+
+	
+source.geo.location
+{
+ 
+}
+	
+source.geo.longitude
+
+	
+source.geo.postal_code
+
+	
+source.geo.region_code
+
+	
+source.geo.region_name
+
+	
+source.geo.timezone
+
+	
+source.ip
+
+	
+source.port
+
+	
+source.segment.name
+
+	
+suricata.alert.action
+
+	
+suricata.alert.metadata.created_at
+
+	
+suricata.alert.metadata.signature_severity
+
+	
+suricata.alert.metadata.updated_at
+
+suricata.alert.rev
+
+	
+suricata.alert.severity
+
+	
+suricata.direction
+
+	
+suricata.flow.bytes_toclient
+
+	
+suricata.flow.bytes_toserver
+
+	
+suricata.flow.dest_ip
+
+suricata.flow.dest_port
+
+	
+suricata.flow.pkts_toclient
+
+suricata.flow.pkts_toserver
+
+	
+suricata.flow.src_ip
+
+	
+suricata.flow.src_port
+
+	
+suricata.flow.start
+
+	
+suricata.flow_id
+
+	
+suricata.metadata.flowbits
+
+	
+suricata.pkt_src
+
+	
+suricata.timestamp
+
+	
+tags
+
+	
+timestamp
+
+	
+totDataBytes
+
+	
+vulnerability.category

@@ -1,7 +1,0 @@
-{
-  "_comment": "Maps display names (as seen in the event table) to JSON field keys. Add entries as needed.",
-  "Source IP": "src_ip",
-  "Destination IP": "dest_ip",
-  "Event Time": "event_time",
-  "Severity": "severity"
-}

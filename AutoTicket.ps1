@@ -9,78 +9,90 @@ $outputDir    = Join-Path $scriptDir "output"
 if (-not (Test-Path $EventFile))    { Write-Error "Event file not found: $EventFile"; exit 1 }
 if (-not (Test-Path $templateFile)) { Write-Error "template.txt not found in script directory."; exit 1 }
 
-$event = Get-Content $EventFile -Raw | ConvertFrom-Json
+$json = Get-Content $EventFile -Raw | ConvertFrom-Json
+
+# Support both Elasticsearch-wrapped exports (_source present) and raw source JSON
+if ($json._source -ne $null) {
+    $source = $json._source
+    $root   = $json
+} else {
+    $source = $json
+    $root   = $null
+}
 
 $templateFields = Get-Content $templateFile |
     Where-Object { $_ -notmatch '^\s*#' -and $_ -match '\S' }
 
-# Walk a dot-notation path through a nested object
-function Resolve-DotPath {
-    param($obj, [string[]]$parts)
+function Get-NestedValue($obj, $pathParts) {
     $current = $obj
-    foreach ($part in $parts) {
-        if ($null -eq $current) { return $null }
-        $current = $current.$part
+    foreach ($part in $pathParts) {
+        if ($current -eq $null) { return $null }
+        $current = $current.($part)
     }
     return $current
 }
 
-function Get-EventValue {
-    param($event, [string]$field)
-    $parts = $field -split '\.'
-
-    # 1. Most fields live under _source; table names are the direct traversal path
-    $val = Resolve-DotPath $event._source $parts
-    if ($null -ne $val) { return $val }
-
-    # 2. Root-level fields: _id, _index, _score, _type, sort, isAnchor
-    $val = Resolve-DotPath $event $parts
-    if ($null -ne $val) { return $val }
-
-    # 3. Elasticsearch 'fields' section stores some timestamps as single-element arrays
-    if ($event.fields -and $null -ne $event.fields.$field) {
-        return $event.fields.$field
+function Format-Timestamp($str) {
+    if ($str -match '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}') {
+        try {
+            $styles = [System.Globalization.DateTimeStyles]::RoundtripKind
+            $dt = [datetime]::Parse($str, $null, $styles)
+            return $dt.ToLocalTime().ToString('MMMM d, yyyy @ HH:mm:ss.fff')
+        } catch { }
     }
-
-    return $null
+    return $str
 }
 
-function Format-Value {
-    param($value)
-    if ($null -eq $value) { return "" }
-
+function Format-Value($value) {
+    if ($value -eq $null) { return '' }
+    if ($value -is [array]) {
+        $items = @()
+        foreach ($item in $value) {
+            $items += Format-Value $item
+        }
+        return $items -join ', '
+    }
     if ($value -is [System.Management.Automation.PSCustomObject]) {
-        $pairs = $value.PSObject.Properties | ForEach-Object { "$($_.Name)=$($_.Value)" }
-        return ($pairs -join "; ")
+        $pairs = @()
+        foreach ($prop in $value.PSObject.Properties) {
+            $pairs += $prop.Name + '=' + $prop.Value
+        }
+        return $pairs -join '; '
     }
-
-    if ($value -is [object[]]) {
-        return ($value | ForEach-Object { Format-Value $_ }) -join ", "
-    }
-
-    return "$value"
+    return Format-Timestamp "$value"
 }
 
-$lines = [System.Collections.Generic.List[string]]::new()
+$lines = @()
 
 foreach ($field in $templateFields) {
-    $raw = Get-EventValue $event $field
-    if ($null -eq $raw) {
-        Write-Warning "Field '$field' not found in event data - leaving blank."
+    $pathParts = $field -split '\.'
+
+    $raw = Get-NestedValue $source $pathParts
+
+    # Fall back to root level for fields like _id, _index, _score
+    if ($raw -eq $null -and $root -ne $null) {
+        $raw = Get-NestedValue $root $pathParts
     }
-    $lines.Add("${field}: $(Format-Value $raw)")
-    $lines.Add("")
+
+    if ($raw -eq $null) {
+        Write-Warning "Field '$field' not found - leaving blank."
+    }
+
+    $lines += $field + ': ' + (Format-Value $raw)
+    $lines += ''
 }
 
 # Remove trailing blank line
-if ($lines.Count -gt 0 -and $lines[$lines.Count - 1] -eq "") {
-    $lines.RemoveAt($lines.Count - 1)
+if ($lines.Count -gt 0 -and $lines[$lines.Count - 1] -eq '') {
+    $lines = $lines[0..($lines.Count - 2)]
 }
 
-if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Path $outputDir | Out-Null }
+if (-not (Test-Path $outputDir)) {
+    New-Item -ItemType Directory -Path $outputDir | Out-Null
+}
 
-$timestamp  = Get-Date -Format "yyyyMMdd_HHmmss"
-$outputFile = Join-Path $outputDir "ticket_$timestamp.txt"
+$timestamp  = Get-Date -Format 'yyyyMMdd_HHmmss'
+$outputFile = Join-Path $outputDir ('ticket_' + $timestamp + '.txt')
 
 $lines | Set-Content $outputFile -Encoding UTF8
-Write-Host "Ticket written to: $outputFile"
+Write-Host ('Ticket written to: ' + $outputFile)

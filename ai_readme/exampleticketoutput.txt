@@ -12,7 +12,9 @@ source.ip: ###
 
 source.port: ###
 
-destination.ip/destination.port: ###
+destination.ip: ###
+
+destination.port: ###
 
 protocol: ###
 

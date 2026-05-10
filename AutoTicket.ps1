@@ -1,13 +1,17 @@
 param(
-    [Parameter(Mandatory)][string]$EventFile
+    [string]$EventFile
 )
 
+if (-not $EventFile) {
+    $EventFile = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "PasteEventHere.json"
+}
+
 $scriptDir    = Split-Path -Parent $MyInvocation.MyCommand.Path
-$templateFile = Join-Path $scriptDir "template.txt"
+$templateFile = Join-Path $scriptDir "UserTemplate.txt"
 $outputDir    = Join-Path $scriptDir "output"
 
 if (-not (Test-Path $EventFile))    { Write-Error "Event file not found: $EventFile"; exit 1 }
-if (-not (Test-Path $templateFile)) { Write-Error "template.txt not found in script directory."; exit 1 }
+if (-not (Test-Path $templateFile)) { Write-Error "UserTemplate.txt not found in script directory."; exit 1 }
 
 $json = Get-Content $EventFile -Raw | ConvertFrom-Json
 

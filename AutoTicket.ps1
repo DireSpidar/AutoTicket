@@ -24,8 +24,10 @@ if ($json._source -ne $null) {
     $root   = $null
 }
 
-$templateFields = Get-Content $templateFile |
-    Where-Object { $_ -notmatch '^\s*#' -and $_ -match '\S' }
+$zwPattern = '[' + [char]0x200B + [char]0x200C + [char]0x200D + [char]0xFEFF + [char]0x00AD + ']'
+$templateFields = Get-Content $templateFile -Encoding UTF8 |
+    Where-Object { $_ -notmatch '^\s*#' -and $_ -match '\S' } |
+    ForEach-Object { ($_ -replace $zwPattern, '').Trim() }
 
 function Get-NestedValue($obj, $pathParts) {
     $current = $obj
@@ -66,7 +68,8 @@ function Format-Value($value) {
     return Format-Timestamp "$value"
 }
 
-$lines = @()
+$populatedLines    = @()
+$unpopulatedFields = @()
 
 foreach ($field in $templateFields) {
     $pathParts = $field -split '\.'
@@ -79,16 +82,34 @@ foreach ($field in $templateFields) {
     }
 
     if ($raw -eq $null) {
-        Write-Warning "Field '$field' not found - leaving blank."
+        $unpopulatedFields += $field
+    } else {
+        $populatedLines += $field + ': ' + (Format-Value $raw)
+        $populatedLines += ''
     }
-
-    $lines += $field + ': ' + (Format-Value $raw)
-    $lines += ''
 }
 
-# Remove trailing blank line
+$lines = @()
+
+# Populated fields
+$lines += $populatedLines
 if ($lines.Count -gt 0 -and $lines[$lines.Count - 1] -eq '') {
     $lines = $lines[0..($lines.Count - 2)]
+}
+
+# Unpopulated fields section
+if ($unpopulatedFields.Count -gt 0) {
+    $lines += ''
+    $lines += ''
+    $lines += 'Unpopulated Fields:'
+    $lines += ''
+    foreach ($field in $unpopulatedFields) {
+        $lines += $field + ': '
+        $lines += ''
+    }
+    if ($lines[$lines.Count - 1] -eq '') {
+        $lines = $lines[0..($lines.Count - 2)]
+    }
 }
 
 if (-not (Test-Path $outputDir)) {

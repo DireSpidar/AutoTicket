@@ -7,7 +7,11 @@ Generates a formatted ticket file from a JSON event export. Fill out the templat
 ## Setup
 
 1. Clone or download this repo to your Windows machine:
-    git clone https://github.com/DireSpidar/AutoTicket.git
+
+   ```
+   git clone https://github.com/DireSpidar/AutoTicket.git
+   ```
+
 2. Open `UserTemplate.txt` and list the fields you want in your ticket — one per line, exactly as they appear in the event table. Lines starting with `#` are ignored.
 
 **Example `UserTemplate.txt`:**

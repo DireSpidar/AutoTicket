@@ -25,7 +25,6 @@ source.port
 destination.ip
 destination.port
 network.direction
-Time Range Investigated
 ```
 
 > The order of fields in the template is the order they appear in the output.  

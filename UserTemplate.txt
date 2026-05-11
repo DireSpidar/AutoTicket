@@ -409,4 +409,4 @@
 # zeek.x509.client_cert
 # zeek.x509.fingerprint
 # zeek.x509.host_cert
-zeek.x509.san_dns
+# zeek.x509.san_dns

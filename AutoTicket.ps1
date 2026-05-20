@@ -6,9 +6,10 @@ if (-not $EventFile) {
     $EventFile = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "PasteEventHere.json"
 }
 
-$scriptDir    = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir    = $PSScriptRoot
 $templateFile = Join-Path $scriptDir "UserTemplate.txt"
 $outputDir    = Join-Path $scriptDir "output"
+
 
 if (-not (Test-Path $EventFile))    { Write-Error "Event file not found: $EventFile"; exit 1 }
 if (-not (Test-Path $templateFile)) { Write-Error "UserTemplate.txt not found in script directory."; exit 1 }
@@ -27,7 +28,8 @@ if ($json._source -ne $null) {
 $zwPattern = '[' + [char]0x200B + [char]0x200C + [char]0x200D + [char]0xFEFF + [char]0x00AD + ']'
 $templateFields = Get-Content $templateFile -Encoding UTF8 |
     Where-Object { $_ -notmatch '^\s*#' -and $_ -match '\S' } |
-    ForEach-Object { ($_ -replace $zwPattern, '').Trim() }
+    ForEach-Object { ($_ -replace $zwPattern, '' -replace '\r','').Trim() }
+
 
 function Get-NestedValue($obj, $pathParts) {
     $current = $obj

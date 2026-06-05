@@ -1,9 +1,19 @@
- source.ip
- destination.ip
- destination.port
- rule.name
- rule.category
- network.direction
- suricata.flow.src_ip
- suricata.alert.severity
- @timestamp
+rule.name
+rule.category
+@timestamp
+_id
+event.id
+host.name
+protocol
+client.bytes
+network.bytes
+network.direction
+source.ip
+source.port
+destination.ip
+destination.port
+source.geo.country_name
+tags
+suricata.alert.metadata.signature_severity
+suricata.alert.rev
+suricata.alert.severity

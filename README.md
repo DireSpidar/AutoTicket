@@ -9,7 +9,7 @@ Generates a formatted ticket file from a JSON event export. Copy your event JSON
 1. Clone or download this repo to your Windows machine:
 
    ```
-   git clone https://github.com/DireSpidar/AutoTicket.git
+   git clone --branch test-branch https://github.com/DireSpidar/AutoTicket.git
    ```
 
 2. Open the `Templates` folder and edit `DefaultTemplate` (or create a new template file) to list the fields you want in your ticket — one field name per line.

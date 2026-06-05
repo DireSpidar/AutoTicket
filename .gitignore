@@ -1,1 +1,4 @@
 Ignore_Folder/
+ticket output/
+output/
+config.json

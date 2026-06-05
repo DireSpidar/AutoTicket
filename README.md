@@ -1,6 +1,6 @@
 # AutoTicket
 
-Generates a formatted ticket file from a JSON event export. Fill out the template with the fields you want, run the script, and copy-paste the output into your ticketing software.
+Generates a formatted ticket file from a JSON event export. Copy your event JSON from the SIEM, run the script, and paste the output into your ticketing software.
 
 ---
 
@@ -12,9 +12,9 @@ Generates a formatted ticket file from a JSON event export. Fill out the templat
    git clone https://github.com/DireSpidar/AutoTicket.git
    ```
 
-2. Open `UserTemplate.txt` and list the fields you want in your ticket — one per line, exactly as they appear in the event table. Lines starting with `#` are ignored.
+2. Open the `Templates` folder and edit `DefaultTemplate` (or create a new template file) to list the fields you want in your ticket — one field name per line.
 
-**Example `UserTemplate.txt`:**
+**Example template:**
 ```
 agent.name
 rule.name
@@ -28,40 +28,43 @@ network.direction
 ```
 
 > The order of fields in the template is the order they appear in the output.  
-> Fields with no value in the event (or manual fields like `Time Range Investigated`) are left blank for you to fill in.  
-> See the bottom section of `UserTemplate.txt` for the full list of available field names.
+> Fields not present in the event are collected at the bottom of the ticket for manual fill-in.  
+> See `Templates\TemplateRefrence.txt` for the full list of available field names.
 
 ---
 
 ## Running the Script
 
-1. Open the event in your tracking software and copy the raw JSON data.
-2. Open `PasteEventHere.json`, select all, paste the copied JSON, and save the file.
-3. Open PowerShell and navigate to the AutoTicket folder.
-4. Run:
+1. In your SIEM, copy the raw JSON for the event you are investigating.
+2. Double-click **`Run AutoTicket.bat`** (or run `AutoTicket.ps1` directly in PowerShell).
+3. Choose an option from the menu:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\AutoTicket.ps1
+```
+AutoTicket
+==========
+Template: DefaultTemplate
+
+1) Paste from clipboard and create ticket
+2) Select template
+3) Open template folder
+4) Quit
 ```
 
-The script reads from `PasteEventHere.json` automatically. If you prefer to point it at a different file, you can pass the path directly:
+**Option 1** reads JSON from your clipboard, generates the ticket using the active template, and saves it to the `ticket output` folder. You will be asked if you want the ticket copied back to your clipboard.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\AutoTicket.ps1 -EventFile "path\to\event.json"
-```
+**Option 2** lists all templates in the `Templates` folder. Select one to make it the active template. Your selection is remembered between sessions.
 
-> **First time only:** If PowerShell blocks the script, run this first:
-> ```powershell
-> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-> ```
+**Option 3** opens the `Templates` folder in File Explorer so you can add, edit, or remove templates without leaving the script.
+
+**Option 4** exits.
 
 ---
 
 ## Output
 
-The ticket file is saved to the `output\` folder inside the AutoTicket directory, named `ticket_<timestamp>.txt`.
+Tickets are saved to the `ticket output` folder as `ticket_<timestamp>.txt`.
 
-Open it, fill in any blank fields, then copy-paste the contents into your ticket.
+Open the file, fill in any blank fields in the *Unpopulated Fields* section, then copy-paste the contents into your ticket.
 
 **Example output:**
 ```
@@ -83,5 +86,14 @@ destination.port: 443
 
 network.direction: outbound
 
+
+Unpopulated Fields:
+
 Time Range Investigated: 
 ```
+
+---
+
+## Adding Templates
+
+Create a plain text file (no extension needed) in the `Templates` folder with one field name per line. The file name becomes the template name shown in the menu. `TemplateRefrence.txt` lists all available field names and is excluded from the template list automatically.

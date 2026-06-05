@@ -1,0 +1,9 @@
+ source.ip
+ destination.ip
+ destination.port
+ rule.name
+ rule.category
+ network.direction
+ suricata.flow.src_ip
+ suricata.alert.severity
+ @timestamp
